@@ -3,6 +3,9 @@ import { Container, Row, Col, InputGroup, FormControl } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import { fetchData } from './api'; // Importa la función fetchData desde api.ts
 
+
+import Graficocomponent from './components/Grafico';
+
 const API_URL = 'https://mindicador.cl/api'; // Reemplaza esto con la URL de tu API
 
 const App: React.FC = () => {
@@ -60,7 +63,7 @@ const App: React.FC = () => {
       </Row>
       <Row>
       <Col>
-        asdasdasd
+        <Graficocomponent />
       </Col>
       <Col>
       {data ? (
