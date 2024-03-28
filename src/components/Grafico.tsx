@@ -1,13 +1,15 @@
 import Plot from 'react-plotly.js';
 
-const Graficocomponent = () => {
-    // Datos para el gráfico
-    var trace1 = {
-        x: [1, 2, 3, 4],
-        y: [10, 15, 13, 17],
-        type: 'scatter'
-    };
-  
+
+type PlotType = 'bar' | 'pie' | 'scatter';
+
+interface Props {
+    x: string[];
+    y: number[];
+    type: PlotType;
+}
+
+const Graficocomponent: React.FC<Props> = ({ x, y, type }) => {
     // Configuración del diseño del gráfico
     const layout = {
         title: 'Gráfico de ejemplo',
@@ -18,14 +20,12 @@ const Graficocomponent = () => {
     return (
         <div>
             <Plot
-                data={[
-                    {
-                        x: ["Enero", "Febrero", "Marzo", "Abril"],
-                        y: [10, 15, 13, 17],
-                        type: 'scatter'
-                    },
-                ]}
-                layout={ layout }
+                data={[{
+                    x: x,
+                    y: y,
+                    type: type
+                }]}
+                layout={layout}
             />
         </div>
     );

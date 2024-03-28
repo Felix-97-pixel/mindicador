@@ -63,7 +63,11 @@ const App: React.FC = () => {
       </Row>
       <Row>
       <Col>
-        <Graficocomponent />
+      <Graficocomponent
+          x={["Enero", "Febrero", "Marzo", "Abril"]}
+          y={[10, 15, 13, 17]}
+          type="scatter"
+      />
       </Col>
       <Col>
       {data ? (
