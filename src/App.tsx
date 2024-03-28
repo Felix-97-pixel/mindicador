@@ -1,26 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, InputGroup, FormControl } from 'react-bootstrap';
-import { fetchData } from './api'; // Importa la función fetchData desde api.ts
+import { fetchData } from './api';
 import Graficocomponent from './components/Grafico';
-import { EconomicIndicators, economicIndicators, Year, years, months } from './constantes/const'; // Importa las constantes
+import { EconomicIndicators, economicIndicators, Year, years, months } from './constantes/const';
 
-const API_URL = 'https://mindicador.cl/api'; // Reemplaza esto con la URL de tu API
+const API_URL = 'https://mindicador.cl/api';
 
 const App: React.FC = () => {
   const [data, setData] = useState<any>(null);
+  const [selectedIndicator, setSelectedIndicator] = useState<EconomicIndicators | null>(null);
+  const [selectedYear, setSelectedYear] = useState<Year | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetchDataFromAPI = async () => {
-      try {
-        const jsonData = await fetchData(API_URL);
-        setData(jsonData);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
+    if (selectedIndicator && selectedYear && selectedMonth) {
+      fetchDataFromAPI(selectedIndicator, selectedYear, selectedMonth);
+    }
+  }, [selectedIndicator, selectedYear, selectedMonth]);
 
-    fetchDataFromAPI();
-  }, []);
+  const fetchDataFromAPI = async (indicator: EconomicIndicators, year: Year, month: number) => {
+    const apiUrl = `${API_URL}/${indicator}/${year}`;
+    try {
+      const jsonData = await fetchData(apiUrl);
+      setData(jsonData);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const yearOptions = years.map((year: Year) => (
     <option key={year} value={year}>{year}</option>
@@ -28,10 +34,9 @@ const App: React.FC = () => {
   const economicIndicatorsOptions = economicIndicators.map((economicIndicator: EconomicIndicators) => (
     <option key={economicIndicator} value={economicIndicator}>{economicIndicator}</option>
   ));
-
   const monthOptions = Object.entries(months).map(([name, number]) => (
     <option key={number} value={number}>{name}</option>
-));
+  ));
 
   return (
     <Container>
@@ -39,8 +44,8 @@ const App: React.FC = () => {
         <Col>
           <InputGroup className="mb-3">
             <InputGroup.Text>Indicador</InputGroup.Text>
-            <FormControl as="select" id="economicIndicator">
-              <option selected>Choose...</option>
+            <FormControl as="select" id="economicIndicator" onChange={(e) => setSelectedIndicator(e.target.value as EconomicIndicators)}>
+              <option selected>--- Selecciona una opción ---</option>
               {economicIndicatorsOptions}
             </FormControl>
           </InputGroup>
@@ -48,8 +53,8 @@ const App: React.FC = () => {
         <Col>
           <InputGroup className="mb-3">
             <InputGroup.Text>Mes</InputGroup.Text>
-            <FormControl as="select" id="inputGroupSelect02">
-              <option selected>Choose...</option>
+            <FormControl as="select" id="inputGroupSelect02" onChange={(e) => setSelectedMonth(parseInt(e.target.value))}>
+              <option selected>--- Selecciona una opción ---</option>
               {monthOptions}
             </FormControl>
           </InputGroup>
@@ -57,8 +62,8 @@ const App: React.FC = () => {
         <Col>
           <InputGroup className="mb-3">
             <InputGroup.Text>Año</InputGroup.Text>
-            <FormControl as="select" id="year">
-              <option selected>Choose...</option>
+            <FormControl as="select" id="year" onChange={(e) => setSelectedYear(parseInt(e.target.value))}>
+              <option selected>--- Selecciona una opción ---</option>
               {yearOptions}
             </FormControl>
           </InputGroup>
@@ -67,8 +72,8 @@ const App: React.FC = () => {
       <Row>
         <Col>
           <Graficocomponent
-            x={["Enero", "Febrero", "Marzo", "Abril"]}
-            y={[10, 15, 13, 17]}
+            x={["Enero", "Febrero", "Marzo", "Abril"]} // Aquí deberías utilizar los datos obtenidos del API
+            y={[10, 15, 13, 17]} // Aquí deberías utilizar los datos obtenidos del API
             type="scatter"
           />
         </Col>
