@@ -6,6 +6,16 @@ import { EconomicIndicators, economicIndicators, Year, years, months } from './c
 
 const API_URL = 'https://mindicador.cl/api';
 
+const yearOptions = years.map((year: Year) => (
+  <option key={year} value={year}>{year}</option>
+));
+const economicIndicatorsOptions = economicIndicators.map((economicIndicator: EconomicIndicators) => (
+  <option key={economicIndicator} value={economicIndicator}>{economicIndicator}</option>
+));
+const monthOptions = Object.entries(months).map(([name, number]) => (
+  <option key={number} value={number}>{name}</option>
+));
+
 const App: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const [selectedIndicator, setSelectedIndicator] = useState<EconomicIndicators | null>(null);
@@ -13,12 +23,12 @@ const App: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
 
   useEffect(() => {
-    if (selectedIndicator && selectedYear && selectedMonth) {
-      fetchDataFromAPI(selectedIndicator, selectedYear, selectedMonth);
+    if (selectedIndicator && selectedYear) {
+      fetchDataFromAPI(selectedIndicator, selectedYear);
     }
-  }, [selectedIndicator, selectedYear, selectedMonth]);
+  }, [selectedIndicator, selectedYear]);
 
-  const fetchDataFromAPI = async (indicator: EconomicIndicators, year: Year, month: number) => {
+  const fetchDataFromAPI = async (indicator: EconomicIndicators, year: Year) => {
     const apiUrl = `${API_URL}/${indicator}/${year}`;
     try {
       const jsonData = await fetchData(apiUrl);
@@ -27,16 +37,6 @@ const App: React.FC = () => {
       console.error('Error:', error);
     }
   };
-
-  const yearOptions = years.map((year: Year) => (
-    <option key={year} value={year}>{year}</option>
-  ));
-  const economicIndicatorsOptions = economicIndicators.map((economicIndicator: EconomicIndicators) => (
-    <option key={economicIndicator} value={economicIndicator}>{economicIndicator}</option>
-  ));
-  const monthOptions = Object.entries(months).map(([name, number]) => (
-    <option key={number} value={number}>{name}</option>
-  ));
 
   return (
     <Container>
