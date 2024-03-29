@@ -97,13 +97,13 @@ const App: React.FC = () => {
       <Row>
         <Col>
         <Graficocomponent
-            x={xaxis_values}
-            y={yaxis_values}
-            type="scatter"
-            title={`${data?.nombre} de ${selectedMonth} de ${selectedYear}`}
-            xaxis={{ title: '' }}
-            yaxis={{ title: `Valor en ${data?.unidad_medida}` }}
-          />
+          x={(xaxis_values !== undefined && yaxis_values !== undefined && data?.nombre !== undefined && selectedMonth !== undefined && selectedYear !== undefined && data?.unidad_medida !== undefined) ? xaxis_values : []}
+          y={(xaxis_values !== undefined && yaxis_values !== undefined && data?.nombre !== undefined && selectedMonth !== undefined && selectedYear !== undefined && data?.unidad_medida !== undefined) ? yaxis_values : []}
+          type="scatter"
+          title={(data?.nombre !== undefined && selectedMonth !== undefined && selectedYear !== undefined) ? `${data.nombre} de ${selectedMonth} de ${selectedYear}` : ''}
+          xaxis={{ title: '' }}
+          yaxis={{ title: (data?.unidad_medida !== undefined) ? `Valor en ${data.unidad_medida}` : '' }}
+        />
         </Col>
         <Col>
           {data ? (
