@@ -66,19 +66,19 @@ const App: React.FC = () => {
         </Col>
         <Col>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Mes</InputGroup.Text>
-            <FormControl as="select" id="inputGroupSelect02" onChange={(e) => setSelectedMonth(parseInt(e.target.value))}>
+            <InputGroup.Text>Año</InputGroup.Text>
+            <FormControl as="select" id="year" onChange={(e) => setSelectedYear(parseInt(e.target.value))}>
               <option selected>--- Selecciona una opción ---</option>
-              {monthOptions}
+              {yearOptions}
             </FormControl>
           </InputGroup>
         </Col>
         <Col>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Año</InputGroup.Text>
-            <FormControl as="select" id="year" onChange={(e) => setSelectedYear(parseInt(e.target.value))}>
+            <InputGroup.Text>Mes</InputGroup.Text>
+            <FormControl as="select" id="inputGroupSelect02" onChange={(e) => setSelectedMonth(parseInt(e.target.value))}>
               <option selected>--- Selecciona una opción ---</option>
-              {yearOptions}
+              {monthOptions}
             </FormControl>
           </InputGroup>
         </Col>
