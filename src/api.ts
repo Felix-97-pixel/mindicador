@@ -11,3 +11,7 @@ export async function fetchData(url: string): Promise<any> {
       throw new Error('Error al realizar la solicitud a la API');
     }
   }
+
+
+
+  

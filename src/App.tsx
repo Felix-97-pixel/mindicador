@@ -23,16 +23,30 @@ const App: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
 
   useEffect(() => {
-    if (selectedIndicator && selectedYear) {
-      fetchDataFromAPI(selectedIndicator, selectedYear);
+    if (selectedIndicator && selectedYear && selectedMonth) {
+      fetchDataFromAPI(selectedIndicator, selectedYear, selectedMonth);
     }
-  }, [selectedIndicator, selectedYear]);
+  }, [selectedIndicator, selectedYear, selectedMonth]);
 
-  const fetchDataFromAPI = async (indicator: EconomicIndicators, year: Year) => {
+  const fetchDataFromAPI = async (indicator: EconomicIndicators, year: Year, month: number ) => {
     const apiUrl = `${API_URL}/${indicator}/${year}`;
     try {
       const jsonData = await fetchData(apiUrl);
-      setData(jsonData);
+      // Definir el mes que deseas filtrar (por ejemplo, enero)
+      const monthToFilter = month; // Enero
+
+      // Filtrar los resultados para obtener solo aquellos que corresponden al mes especificado
+      interface DataItem {
+        fecha: string;
+        valor: number;
+      }
+      
+      const filteredData = jsonData.serie.filter((item: DataItem) => {
+        const date = new Date(item.fecha);
+        return date.getMonth() + 1 === monthToFilter;
+      });
+
+      setData(filteredData);
     } catch (error) {
       console.error('Error:', error);
     }

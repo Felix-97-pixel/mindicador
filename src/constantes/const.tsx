@@ -1,7 +1,6 @@
 export type EconomicIndicators = 'uf' | 'ivp' | 'dolar' | 'dolar_intercambio' | 'euro' | 'ipc' | 'utm' | 'imacec' | 'tpm' | 'libra_cobre' | 'tasa_desempleo' | 'bitcoin';
 export type Year = number;
-
-
+export type Month = [];
 
 
 // Declarar el arreglo de nombres de datos
@@ -22,7 +21,7 @@ export const economicIndicators: EconomicIndicators[] = [
 
 // Declarar el arreglo de años
 export const years: Year[] = [];
-for (let year = 1990; year <= 2024; year++) {
+for (let year = 1977; year <= 2024; year++) {
     years.push(year);
 }
 
