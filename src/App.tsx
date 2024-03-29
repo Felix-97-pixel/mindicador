@@ -6,6 +6,11 @@ import { EconomicIndicators, economicIndicators, Year, years, months } from './c
 
 const API_URL = 'https://mindicador.cl/api';
 
+const reversedMonths: { [key: number]: string } = {};
+Object.entries(months).forEach(([name, number]) => {
+  reversedMonths[number] = name;
+});
+
 const yearOptions = years.map((year: Year) => (
   <option key={year} value={year}>{year}</option>
 ));
@@ -18,6 +23,7 @@ const monthOptions = Object.entries(months).map(([name, number]) => (
 
 let xaxis_values: string[] = [];
 let yaxis_values: number[] = [];
+let month_string: string ;
 
 const App: React.FC = () => {
   const [data, setData] = useState<any>(null);
@@ -39,6 +45,8 @@ const App: React.FC = () => {
       const jsonData = await fetchData(apiUrl);
       // Definir el mes que deseas filtrar (por ejemplo, enero)
       const monthToFilter = month; // Enero
+      month_string = reversedMonths[month];
+      // Invertir el objeto para que los números sean las claves y los nombres de los meses sean los valores
 
       // Filtrar los resultados para obtener solo aquellos que corresponden al mes especificado
       interface DataItem {
@@ -100,7 +108,7 @@ const App: React.FC = () => {
           x={(xaxis_values !== undefined && yaxis_values !== undefined && data?.nombre !== undefined && selectedMonth !== undefined && selectedYear !== undefined && data?.unidad_medida !== undefined) ? xaxis_values : []}
           y={(xaxis_values !== undefined && yaxis_values !== undefined && data?.nombre !== undefined && selectedMonth !== undefined && selectedYear !== undefined && data?.unidad_medida !== undefined) ? yaxis_values : []}
           type="scatter"
-          title={(data?.nombre !== undefined && selectedMonth !== undefined && selectedYear !== undefined) ? `${data.nombre} de ${selectedMonth} de ${selectedYear}` : ''}
+          title={(data?.nombre !== undefined && selectedMonth !== undefined && selectedYear !== undefined) ? `${data.nombre} de ${month_string} de ${selectedYear}` : ''}
           xaxis={{ title: '' }}
           yaxis={{ title: (data?.unidad_medida !== undefined) ? `Valor en ${data.unidad_medida}` : '' }}
         />
