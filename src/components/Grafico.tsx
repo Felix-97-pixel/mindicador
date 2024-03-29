@@ -7,16 +7,13 @@ interface Props {
     x: string[];
     y: number[];
     type: PlotType;
+    title: string;
+    xaxis: { title: string};
+    yaxis: { title: string};
 }
 
-const Graficocomponent: React.FC<Props> = ({ x, y, type }) => {
-    // Configuración del diseño del gráfico
-    const layout = {
-        title: 'Gráfico de ejemplo',
-        xaxis: { title: 'Eje X' },
-        yaxis: { title: 'Eje Y' },
-    };
-
+const Graficocomponent: React.FC<Props> = ({ x, y, type, title, xaxis, yaxis }) => {
+    
     return (
         <div>
             <Plot
@@ -25,7 +22,11 @@ const Graficocomponent: React.FC<Props> = ({ x, y, type }) => {
                     y: y,
                     type: type
                 }]}
-                layout={layout}
+                layout={{
+                    title: title,
+                    xaxis: xaxis,
+                    yaxis: yaxis,
+                }}
             />
         </div>
     );

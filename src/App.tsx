@@ -16,6 +16,9 @@ const monthOptions = Object.entries(months).map(([name, number]) => (
   <option key={number} value={number}>{name}</option>
 ));
 
+let xaxis_values: string[] = [];
+let yaxis_values: number[] = [];
+
 const App: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const [selectedIndicator, setSelectedIndicator] = useState<EconomicIndicators | null>(null);
@@ -29,6 +32,8 @@ const App: React.FC = () => {
   }, [selectedIndicator, selectedYear, selectedMonth]);
 
   const fetchDataFromAPI = async (indicator: EconomicIndicators, year: Year, month: number ) => {
+    xaxis_values = [];
+    yaxis_values = [];
     const apiUrl = `${API_URL}/${indicator}/${year}`;
     try {
       const jsonData = await fetchData(apiUrl);
@@ -41,12 +46,18 @@ const App: React.FC = () => {
         valor: number;
       }
       
-      const filteredData = jsonData.serie.filter((item: DataItem) => {
-        const date = new Date(item.fecha);
-        return date.getMonth() + 1 === monthToFilter;
-      });
+        const filteredData = jsonData.serie.filter((item: DataItem) => {
+          const date = new Date(item.fecha);
+          return date.getMonth() + 1 === monthToFilter;
+        });
 
-      setData(filteredData);
+        filteredData.forEach((item: DataItem) => {
+          xaxis_values.push(item.fecha);
+          yaxis_values.push(item.valor);
+        });
+
+      jsonData.serie = filteredData;
+      setData(jsonData);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -60,7 +71,7 @@ const App: React.FC = () => {
             <InputGroup.Text>Indicador</InputGroup.Text>
             <FormControl as="select" id="economicIndicator" onChange={(e) => setSelectedIndicator(e.target.value as EconomicIndicators)}>
               <option selected>--- Selecciona una opción ---</option>
-              {economicIndicatorsOptions}
+              { economicIndicatorsOptions }
             </FormControl>
           </InputGroup>
         </Col>
@@ -69,7 +80,7 @@ const App: React.FC = () => {
             <InputGroup.Text>Año</InputGroup.Text>
             <FormControl as="select" id="year" onChange={(e) => setSelectedYear(parseInt(e.target.value))}>
               <option selected>--- Selecciona una opción ---</option>
-              {yearOptions}
+              { yearOptions }
             </FormControl>
           </InputGroup>
         </Col>
@@ -78,17 +89,20 @@ const App: React.FC = () => {
             <InputGroup.Text>Mes</InputGroup.Text>
             <FormControl as="select" id="inputGroupSelect02" onChange={(e) => setSelectedMonth(parseInt(e.target.value))}>
               <option selected>--- Selecciona una opción ---</option>
-              {monthOptions}
+              { monthOptions }
             </FormControl>
           </InputGroup>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Graficocomponent
-            x={["Enero", "Febrero", "Marzo", "Abril"]} // Aquí deberías utilizar los datos obtenidos del API
-            y={[10, 15, 13, 17]} // Aquí deberías utilizar los datos obtenidos del API
+        <Graficocomponent
+            x={xaxis_values}
+            y={yaxis_values}
             type="scatter"
+            title={`${data?.nombre} de ${selectedMonth} de ${selectedYear}`}
+            xaxis={{ title: '' }}
+            yaxis={{ title: `Valor en ${data?.unidad_medida}` }}
           />
         </Col>
         <Col>
