@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, InputGroup, FormControl } from 'react-bootstrap';
 import { fetchData } from './api';
 import Graficocomponent from './components/Grafico';
-import { EconomicIndicators, economicIndicators, Year, years, months } from './constantes/const';
+import { economicIndicators, Year, years, months } from './constantes/const';
 
 const API_URL = 'https://mindicador.cl/api';
 
@@ -14,8 +14,8 @@ Object.entries(months).forEach(([name, number]) => {
 const yearOptions = years.map((year: Year) => (
   <option key={year} value={year}>{year}</option>
 ));
-const economicIndicatorsOptions = economicIndicators.map((economicIndicator: EconomicIndicators) => (
-  <option key={economicIndicator} value={economicIndicator}>{economicIndicator}</option>
+const economicIndicatorsOptions = Object.entries(economicIndicators).map(([id, name]) => (
+  <option key={id} value={id}>{name}</option>
 ));
 const monthOptions = Object.entries(months).map(([name, number]) => (
   <option key={number} value={number}>{name}</option>
@@ -27,7 +27,7 @@ let month_string: string ;
 
 const App: React.FC = () => {
   const [data, setData] = useState<any>(null);
-  const [selectedIndicator, setSelectedIndicator] = useState<EconomicIndicators | null>(null);
+  const [selectedIndicator, setSelectedIndicator] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<Year | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
 
@@ -37,7 +37,7 @@ const App: React.FC = () => {
     }
   }, [selectedIndicator, selectedYear, selectedMonth]);
 
-  const fetchDataFromAPI = async (indicator: EconomicIndicators, year: Year, month: number ) => {
+  const fetchDataFromAPI = async (indicator: string, year: Year, month: number ) => {
     xaxis_values = [];
     yaxis_values = [];
     const apiUrl = `${API_URL}/${indicator}/${year}`;
@@ -77,7 +77,7 @@ const App: React.FC = () => {
         <Col>
           <InputGroup className="mb-3">
             <InputGroup.Text>Indicador</InputGroup.Text>
-            <FormControl as="select" id="economicIndicator" onChange={(e) => setSelectedIndicator(e.target.value as EconomicIndicators)}>
+            <FormControl as="select" id="economicIndicator" onChange={(e) => setSelectedIndicator(e.target.value)}>
               <option selected>--- Selecciona una opción ---</option>
               { economicIndicatorsOptions }
             </FormControl>

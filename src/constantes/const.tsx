@@ -1,23 +1,23 @@
-export type EconomicIndicators = 'uf' | 'ivp' | 'dolar' | 'dolar_intercambio' | 'euro' | 'ipc' | 'utm' | 'imacec' | 'tpm' | 'libra_cobre' | 'tasa_desempleo' | 'bitcoin';
+export type EconomicIndicators = [];
 export type Year = number;
 export type Month = [];
 
 
 // Declarar el arreglo de nombres de datos
-export const economicIndicators: EconomicIndicators[] = [
-    'uf',
-    'ivp',
-    'dolar',
-    'dolar_intercambio',
-    'euro',
-    'ipc',
-    'utm',
-    'imacec',
-    'tpm',
-    'libra_cobre',
-    'tasa_desempleo',
-    'bitcoin'
-];
+export const economicIndicators: { [key: string]: string } = {
+    uf: 'Unidad de fomento (UF)',
+    ivp: 'Índice de valor promedio (IVP)',
+    dolar: 'Dólar observado',
+    dolar_intercambio: 'Dólar acuerdo',
+    euro: 'Euro',
+    ipc: 'Índice de Precios al Consumidor (IPC)',
+    utm: 'Unidad Tributaria Mensual (UTM)',
+    imacec: 'Imacec',
+    tpm: 'Tasa Política Monetaria (TPM)',
+    libra_cobre: 'Libra de Cobre',
+    tasa_desempleo: 'Tasa de desempleo',
+    bitcoin: 'Bitcoin'
+};
 
 // Declarar el arreglo de años
 export const years: Year[] = [];
